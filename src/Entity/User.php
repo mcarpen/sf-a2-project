@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
@@ -61,6 +63,13 @@ class User implements AdvancedUserInterface, \Serializable
      */
     private $active;
 
+    /**
+     * @var Article
+     *
+     * @ORM\OneToMany(targetEntity="Article", mappedBy="author")
+     */
+    private $articles;
+
 
     const ROLE_DEFAULT     = 'ROLE_USER';
     const ROLE_ADMIN       = 'ROLE_ADMIN';
@@ -69,8 +78,14 @@ class User implements AdvancedUserInterface, \Serializable
 
     public function __construct()
     {
-        $this->active = true;
-        $this->roles  = [User::ROLE_DEFAULT];
+        $this->active   = true;
+        $this->roles    = [User::ROLE_DEFAULT];
+        $this->articles = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->getUsername();
     }
 
     /**
@@ -336,5 +351,25 @@ class User implements AdvancedUserInterface, \Serializable
             $this->password,
             $this->active
             ) = unserialize($serialized);
+    }
+
+    /**
+     * @return Collection|Article[]
+     */
+    public function getArticles()
+    {
+        return $this->articles;
+    }
+
+    /**
+     * @param Article $articles
+     *
+     * @return User
+     */
+    public function setArticles(Article $articles)
+    {
+        $this->articles = $articles;
+
+        return $this;
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\ref;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ArticleRepository")
@@ -59,6 +60,13 @@ class Article
      * @ORM\Column(type="datetime")
      */
     private $updatedAt;
+
+    /**
+     * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="articles")
+     */
+    private $author;
 
 
     public function __construct()
@@ -191,6 +199,26 @@ class Article
     public function setUpdatedAt(\DateTime $updatedAt)
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return User
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    /**
+     * @param User $author
+     *
+     * @return $this
+     */
+    public function setAuthor(User $author)
+    {
+        $this->author = $author;
 
         return $this;
     }

@@ -3,10 +3,12 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Cocur\Slugify\Bridge\Symfony\CocurSlugifyBundle;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\ref;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ArticleRepository")
+ * @ORM\EntityListeners({"App\Listener\Entity\ArticleListener"})
  */
 class Article
 {
@@ -39,13 +41,6 @@ class Article
      * @ORM\Column(type="text")
      */
     private $content;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="text")
-     */
-    private $excerpt;
 
     /**
      * @var \DateTime
@@ -118,6 +113,8 @@ class Article
      */
     public function setSlug(string $slug): Article
     {
+
+
         $this->slug = $slug;
 
         return $this;
@@ -139,26 +136,6 @@ class Article
     public function setContent(string $content): Article
     {
         $this->content = $content;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getExcerpt():? string
-    {
-        return $this->excerpt;
-    }
-
-    /**
-     * @param string $excerpt
-     *
-     * @return Article
-     */
-    public function setExcerpt(string $excerpt): Article
-    {
-        $this->excerpt = $excerpt;
 
         return $this;
     }

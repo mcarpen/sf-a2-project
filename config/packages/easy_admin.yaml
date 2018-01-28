@@ -1,4 +1,5 @@
 easy_admin:
+    site_name: '<strong>El blogo</strong>'
     entities:
         User:
             class: App\Entity\User
@@ -13,3 +14,8 @@ easy_admin:
                     - { property: 'plainPassword', type_options: { required: true } }
         Article:
             class: App\Entity\Article
+            form:
+                fields:
+                    - { property: 'title' }
+                    - { property: 'content' }
+                    - { property: 'author' }

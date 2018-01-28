@@ -10,7 +10,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/{page}", name="homepage", defaults={"page"=1})
+     * @Route("/{page}", name="homepage", defaults={"page"=1}, requirements={"page"="\d+"})
+     *
      * @param $page
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -20,13 +21,13 @@ class DefaultController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         /** @var ArticleRepository $repo */
-        $repo     = $em->getRepository(Article::class);
-        $articles = $repo->loadAll(6, ($page - 1) * 6);
-        $count    = $repo->countQuery();
+        $repo          = $em->getRepository(Article::class);
+        $articles      = $repo->loadAll(6, ($page - 1) * 6);
+        $count         = $repo->countQuery();
         $maxPagination = (int)ceil($count / 6);
-        $minPage = (int)max(1, ($page - 5));
-        $maxPage = (int)min($maxPagination, ($page + 5));
-        $max = 0;
+        $minPage       = (int)max(1, ($page - 5));
+        $maxPage       = (int)min($maxPagination, ($page + 5));
+        $max           = 0;
         while (abs($minPage - $maxPage) < 10) {
             if ($minPage > 1) {
                 $minPage--;
@@ -38,6 +39,10 @@ class DefaultController extends Controller
             if ($max > 10) {
                 break;
             }
+        }
+
+        if ( ! $articles) {
+            throw $this->createNotFoundException('There are no articles for this page!');
         }
 
         return $this->render('homepage.html.twig', [
@@ -54,6 +59,8 @@ class DefaultController extends Controller
      * @Route("/article/{slug}", name="article")
      *
      * @param string $slug
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function article(string $slug)
     {
@@ -62,6 +69,13 @@ class DefaultController extends Controller
         $article = $repo->findOneBy([
             'slug' => $slug,
         ]);
-        // 404 ou page qui affiche l'article
+
+        if ( ! $article) {
+            throw $this->createNotFoundException('The article does not exist');
+        }
+
+        return $this->render('article.html.twig', [
+            'article' => $article,
+        ]);
     }
 }

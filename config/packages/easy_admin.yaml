@@ -24,3 +24,6 @@ easy_admin:
                     - { property: 'title' }
                     - { property: 'content' }
                     - { property: 'author' }
+            edit:
+                fields:
+                    - { property: 'createdAt' }

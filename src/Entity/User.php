@@ -48,8 +48,6 @@ class User implements AdvancedUserInterface, \Serializable
     private $plainPassword;
 
     /**
-     * TODO Pour les windows changer "json_array" en "array".
-     *
      * @var array
      *
      * @ORM\Column(type="json_array")
@@ -72,7 +70,7 @@ class User implements AdvancedUserInterface, \Serializable
     public function __construct()
     {
         $this->active = true;
-        $this->roles  = [];
+        $this->roles  = [User::ROLE_DEFAULT];
     }
 
     /**

@@ -9,46 +9,52 @@
     <title>{% block title %}Symfony4{% endblock %}</title>
 </head>
 <body>
-    {% block body %}
-        <header class="container">
-            {% block header %}
-                {% block navbar %}
-                    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                        <a class="navbar-brand" href="#">Navbar</a>
-                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-                        <div class="collapse navbar-collapse" id="navbarNav">
-                            <ul class="navbar-nav">
-                                <li class="nav-item active">
-                                    <a class="nav-link" href="{{ path('homepage') }}">Home <span class="sr-only">(current)</span></a>
-                                </li>
+{% block body %}
+    <header class="container">
+        {% block header %}
+            {% block navbar %}
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <a class="navbar-brand" href="{{ path('homepage') }}">El blogo</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                        <ul class="navbar-nav ml-auto">
+                            {% if app.user %}
+                                <span class="navbar-text">Welcome {{ app.user.username }} | </span>
+                                {% if is_granted('ROLE_ADMIN') %}
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">Articles</a>
+                                    <a href="{{ path('admin') }}" class="nav-link">Dashboard</a>
                                 </li>
+                                {% endif %}
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">Contact</a>
+                                    <a href="{{ path('logout') }}" class="nav-link">Logout</a>
                                 </li>
-                            </ul>
-                        </div>
-                    </nav>
-                {% endblock %}
+                            {% else %}
+                                <li class="nav-item">
+                                    <a href="{{ path('login') }}" class="nav-link">Login</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </nav>
             {% endblock %}
-        </header>
-        <main class="container">
-            {% block main %}
-            {% endblock %}
-        </main>
-        <footer class="container">
-            {% block footer %}
-                <p>&copy; 2018 😀</p>
-            {% endblock %}
-        </footer>
-    {% endblock %}
-    {% block javascripts %}
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
-    {% endblock %}
+        {% endblock %}
+    </header>
+    <main class="container">
+        {% block main %}
+        {% endblock %}
+    </main>
+    <footer class="container">
+        {% block footer %}
+            <p>&copy; 2018 😀</p>
+        {% endblock %}
+    </footer>
+{% endblock %}
+{% block javascripts %}
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+{% endblock %}
 </body>
 </html>

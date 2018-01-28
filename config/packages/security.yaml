@@ -1,7 +1,7 @@
 security:
     encoders:
         App\Entity\User:
-            algorithm: argon2i # TODO Windows, replace "argon2i" by "bcrypt".
+            algorithm: argon2i
 
     providers:
         app_provider:
@@ -26,7 +26,10 @@ security:
                 check_path: login
                 username_parameter: user_login_form[username]
                 password_parameter: user_login_form[password]
+            logout:
+                path:   /logout
+                target: /
 
     access_control:
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        #- { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/admin, roles: ROLE_ADMIN }

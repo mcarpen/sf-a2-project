@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    <h1>Mon contenu 🤟</h1>
+
+    {% for article in articles %}
+        <div>
+            <p>{{ article.title }}</p>
+            <p>{{ article.content }}</p>
+        </div>
+    {% endfor %}
+{% endblock %}
+
+{% block title %}
+    Le titre de ma page d'acceuil.
+{% endblock %}
+
